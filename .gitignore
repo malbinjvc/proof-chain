@@ -1,0 +1,41 @@
+# Haskell / Cabal
+dist-newstyle/
+dist/
+.cabal-sandbox/
+cabal.sandbox.config
+*.o
+*.hi
+*.dyn_o
+*.dyn_hi
+*.chi
+*.chs.h
+*.hp
+*.prof
+*.aux
+*.eventlog
+.stack-work/
+stack.yaml.lock
+.HTF/
+.hpc/
+
+# IDE
+*.swp
+*.swo
+*~
+.vscode/
+.idea/
+*.iml
+tags
+TAGS
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Build artifacts
+result
