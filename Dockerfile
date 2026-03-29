@@ -20,6 +20,7 @@ FROM debian:bookworm-slim
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
       ca-certificates \
+      curl \
       libgmp10 \
       netbase && \
     rm -rf /var/lib/apt/lists/* && \
@@ -38,6 +39,6 @@ USER appuser
 EXPOSE 8080
 
 HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
-  CMD ["./proof-chain", "--help"] || exit 1
+  CMD curl -f http://localhost:8080/health || exit 1
 
 ENTRYPOINT ["./proof-chain"]

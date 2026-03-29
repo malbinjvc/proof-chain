@@ -54,4 +54,8 @@ jobs:
         run: docker build -t proof-chain:test .
 
       - name: Verify Docker image
-        run: docker run --rm proof-chain:test --help || true
+        run: |
+          docker run --rm -d --name proof-chain-test -p 8080:8080 proof-chain:test
+          sleep 3
+          docker logs proof-chain-test
+          docker stop proof-chain-test

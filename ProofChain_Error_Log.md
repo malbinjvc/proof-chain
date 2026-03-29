@@ -46,8 +46,28 @@ src/ProofChain/Clients.hs:193:98: error: [GHC-83865]
 
 ---
 
+## Error 4: Docker Verify Step Hanging
+
+**Error**: CI Docker job hung indefinitely on "Verify Docker image" step.
+
+**Cause**: `docker run --rm proof-chain:test --help` passed `--help` to the Warp server binary, which doesn't handle CLI arguments — it starts listening on port 8080 and never exits. The `|| true` suffix only applies after process exit.
+
+**Fix**: Changed verify step to start container in detached mode (`-d`), wait 3 seconds, check logs, then stop. Also fixed HEALTHCHECK from `CMD ["./proof-chain", "--help"]` to `CMD curl -f http://localhost:8080/health` and added `curl` to runtime image.
+
+---
+
+## Error 5: Git Remote Cross-Wiring
+
+**Error**: ProofChain's GitHub repo had SignalMesh code instead of ProofChain code.
+
+**Cause**: During initial `gh repo create`, the signal-mesh local repo's remote was set to `proof-chain.git` and pushed SignalMesh's initial commit there. ProofChain local repo had no remote configured.
+
+**Fix**: Added correct remote to ProofChain local repo, force-pushed ProofChain code to overwrite the wrong content. Fixed SignalMesh's remote URL to point to `signal-mesh.git`.
+
+---
+
 ## Summary
-- Total errors encountered: 3
+- Total errors encountered: 5
 - All resolved successfully
 - Tests passing: 39/39
-- CI status: Configured (GHC 9.8)
+- CI status: All green (GHC 9.8)
